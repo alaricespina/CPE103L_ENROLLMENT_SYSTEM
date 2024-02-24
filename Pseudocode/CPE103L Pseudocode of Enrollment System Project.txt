@@ -1,0 +1,310 @@
+Start
+    string full_name
+    int student_id
+    int year
+    int term
+    string program
+    bool valid
+    string operation
+    bool enrolled = false
+    Student SampleStudent
+    string tuition_option
+    string sent_grades = "stop"
+    string course_code 
+    int course_grade
+    int x = 0
+    inFile CoursesData
+
+    getInfo()
+    valid = checkDetails(full_name, student_id, year, term, program)
+    while (valid == false)
+        output "Invalid Information provided"
+        getInfo()
+        valid = checkDetails(full_name, student_id, year, term, program)
+    endwhile
+    printDetails(full_name, student_id, year, term, program)
+
+    SampleStudent(full_name, student_id, year, term, program)
+
+    output "Select an operation: "
+    output "Valid Operations: "
+    output "Tuition - View Tuition"
+    output "Enroll - Enroll yourself"
+    output "Sched - View your schedule"
+    output "Quit - Exit the program"
+
+    while (operation <> "Quit")
+        if (operation == "Tuition")
+            if (enrolled == false)
+                output "Please enroll first"
+            else 
+                output "Please select the option for installment 
+                        or full payment for the tuition"
+                input tuition_option
+                double payment[3] = calculation(SampleStudent, tuition_option)
+                print_Tuition(payment, tuition_option)
+
+        else if (operation == "Enroll")
+            output "You have selected the option to enroll"
+            output "Please input your courses from the previous term and their corresponding grade: "
+            output "Example: CM011L [press enter] 2 [press enter]"
+            output "Input stop to stop taking input"
+
+            while((course_code <> sent_grades) AND (m < 20))
+                input course_code
+                input course_grade
+                SampleStudent.add_course(course_code, course_grade, m)
+                m++
+            endwhile
+
+            ScheduleAdd(SampleStudent) 
+
+        else if (operation == "Sched")
+            if (enrolled == false)
+                output "Please enroll first"
+            else
+                ViewSchedule(SampleStudent)
+
+        output "Select an operation: "
+        output "Valid Operations: "
+        output "Tuition - View Tuition"
+        output "Enroll - Enroll yourself"
+        output "Sched - View your schedule"
+        output "Quit - Exit the program"
+Stop
+
+getInfo()
+    output "What is your full name: "
+    input full_name
+    output "What is your student ID: "
+    input student_id
+    output "What year are you on (currently): "
+    input year
+    output "What term are you on (currently): "
+    input term 
+    output "What is your program: "
+    input program
+return
+
+checkDetails(string fn, int id, int y, int term, string prog)
+    bool check = true
+    if (id < 20 00000) 
+        check = false 
+    if (term > 4)
+        check = false 
+    if (y > 5)
+        check = false 
+    if (fn < 0)
+        check = false 
+    if (prog < 0)
+        check = false
+return check
+
+calculation(Student Enrollee, string option)
+    double result[3]
+    const int cost_per_course = 5000;
+    double total = Enrolle.get_number_of_courses() * cost_per_course
+    if (option == "full")
+        result[0] = total
+        result[1] = 0
+        result[2] = 0
+    else if (option == "Option 1")
+        result[0] = 0.11 * total 
+        result[1] = 0.31 * total 
+        result[2] = 0.61 * total 
+    else if (option == "Option 2")
+        result[0] = 0.61 * total 
+        result[1] = 0.31 * total 
+        result[2] = 0.11 * total       
+return result
+
+Courses(Student Enrollee)
+    // Recommended Courses
+    int year, term, lec_hrs, lab_hrs, credit_units, x = 0 
+    string course_code, course_name, prereq, coreq
+    
+    while (CoursesData)
+        input year from CoursesData
+        input term from CoursesData
+        input course_code from CoursesData
+        input course_name from CoursesData
+        input lec_hrs from CoursesData
+        input lab_hrs from CoursesData
+        input credit_units from CoursesData
+        input prereq from CoursesData
+        input coreq from CoursesData
+
+    if (Enrollee.get_term() == 4 )
+        if (Enrollee.get_year() + 1 == year) AND (Enrollee.get_term() == 1)
+            output "Course Code: ", course_code
+            output "Course Name: ", course_name 
+            output "Course Prerequisites: ", prereq
+            Enrollee.add_new_course(course_code, course_name, prereq, x)
+            x++
+
+    else 
+        if (Enrollee.get_year() == year) AND (Enrollee.get_term() + 1 == term)
+            output "Course Code: ", course_code
+            output "Course Name: ", course_name 
+            output "Course Prerequisites: ", prereq
+            Enrollee.add_new_course(course_code, course_name, prereq, x)
+            x++
+    endif
+return 
+
+ScheduleAdd(Student Enrollee)
+    output "The following are the courses to be added to your schedule: "
+    Courses(Enrollee)
+    GradeChecker(Enrollee)
+    output "The following courses were not added due to an incomplete grade: "
+    Enrollee.print_inprogress_courses()
+    output "Courses added, please proceed to choosing your payment in the tuition option"
+return
+
+GradeChecker(Student Enrollee)
+    //Compare pre req course of newcourse
+    int max_courses, z = 24, 0
+    string prereqsearch
+    
+    for (int i = 0; i < max_courses; i++)
+        prereqsearch = Enrollee.get_newcourse_prereq(i)
+        for (int j = 0; j < max_courses; j++)
+            if (prereqsearch = Enrollee.get_course_code(j))
+                if (Enrollee.get_GWA(j) > 3)
+                    Enrollee.remove_new_course(i)
+                    Enrollee.add_inprogress_courses(prereq, z)
+                    z++
+return
+
+printDetails(string fn, int id, int y, int term, string prog)
+    print "Student's Full Name: " , fn
+    print "Student ID: ", id 
+    print "Year: ", y 
+    print "Term: ", term
+    print "Program: ", prog 
+return
+
+print_Tuition(double tuit[3], string option)
+    if (option == "full")
+        output "You have selected the full payment option"
+        output "To be paid: " result[0]
+    else if (option == "Option 1")
+        output "You have selected Option 1 Installment Option"
+        output "First Installment: " result[0]
+        output "Second Installment: " result[1]
+        output "Third Installment: " result[2]   
+    else if (option == "Option 2")
+        output "You have selected Option 2 Installment Option"
+        output "First Installment: " result[0]
+        output "Second Installment: " result[1]
+        output "Third Installment: " result[2]  
+return
+
+ViewSchedule(Student Enrolee)
+    string cc 
+    string cn 
+    for (int i = 0; i < max_courses; i++)
+        cc = Enrollee.enrolled_courses[i].get_course_code() 
+        cn = Enrollee.enrolled_courses[i].get_course_name() 
+        if (cc <> " ")
+            output "Course Code: ", cc 
+            output "Course Name: ", cn   
+return 
+
+class Student 
+    private:
+        string full_name
+        int student_id 
+        int year 
+        int term
+        int n
+        string program
+        Course previous_courses[24]
+        Course inprogress_courses[24]
+        NewCourse enrolled_courses[24] 
+    public 
+        string get_full_name()
+        return full_name
+        int get_student_id()
+        return student_id
+        int get_year()
+        return year 
+        int get_term()
+        return term  
+        string get_program()
+        return program 
+
+        void add_course(string cc, double gwa, int n)
+            previous_courses[n].set_course_code(cc) 
+            previous_courses[n].set_gwa(gwa)
+
+        int get_number_of_courses()
+            int nums
+            for (int i = 0; i < 20; i++)
+                if (previous_courses[n].get_course_code <> " ")
+                    nums++
+            endfor
+        return nums
+
+        string get_newcourse_prereq(int n)
+        return enrolled_courses[n].get_newcourse_prereq()
+
+        string get_course_code(int n)
+        return previous_courses[n].get_course_code()
+
+        double get_GWA(int index)
+        return previous_courses[index].get_gwa()
+
+        void add_new_course(string cc, string cn, int n)
+            enrolled_courses[n].enroll_new_course(cc, cn)
+        return
+
+        void remove_new_course(int n)
+            enrolled_course[n].enroll_new_course(" ", " ")
+        return
+
+        void add_inprogress_courses(string cc, int n)
+            inprogress_courses[n].set_course_code(cc)
+            inprogress_courses[n].set_gwa(4)
+        return 
+        
+        void print_inprogress_courses()
+            for (int i = 0; i < max_courses; i++)
+                if (inprogress_courses[i].get_course_code() <> " ")
+                    output inprogress_courses[i].get_course_code()     
+        return 
+
+class Course
+    private:
+        string course_code
+        double GWA
+    public:
+        void set_course_code(cc)
+            course_code = cc 
+        void set_gwa(ave)
+            GWA = ave 
+        string get_course_code()
+        return course_code
+        double get_gwa()
+        return GWA
+
+class NewCourse
+    private:
+        string course_code
+        string course_name
+        string prerequisites 
+    public:
+        void enroll_new_course(string cc, string cn, string pr)
+            course_code = cc 
+            course_name = cn
+            prerequisites = pr
+        return
+
+        string get_prereq()
+        return prerequisites
+
+        string get_course_code()
+        return course_code
+
+        string get_course_name()
+        return course_name
